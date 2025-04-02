@@ -1,44 +1,24 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tabla Periódica Interactiva</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        .tabla-periodica { display: grid; grid-template-columns: repeat(18, 1fr); gap: 5px; justify-content: center; }
-        .elemento { padding: 10px; border: 1px solid #000; cursor: pointer; }
-        .info { margin-top: 20px; padding: 10px; border: 1px solid #000; display: none; }
-    </style>
-</head>
-<body>
-    <h1>Tabla Periódica Interactiva</h1>
-    <div class="tabla-periodica" id="tabla"></div>
-    <div class="info" id="info"></div>
+import streamlit as st
 
-    <script>
-        const elementos = [
-            { numero: 1, simbolo: "H", nombre: "Hidrógeno", uso: "Combustible y producción de amoníaco", ubicacion: "En el agua y compuestos orgánicos" },
-            { numero: 2, simbolo: "He", nombre: "Helio", uso: "Globos y refrigerante", ubicacion: "Atmósfera y gas natural" },
-            { numero: 3, simbolo: "Li", nombre: "Litio", uso: "Baterías y medicina", ubicacion: "Minerales como espodumena" },
-            // Agregar más elementos...
-        ];
+# Definir los elementos químicos con sus propiedades
+elementos = [
+    {"numero": 1, "simbolo": "H", "nombre": "Hidrógeno", "uso": "Combustible y producción de amoníaco", "ubicacion": "En el agua y compuestos orgánicos"},
+    {"numero": 2, "simbolo": "He", "nombre": "Helio", "uso": "Globos y refrigerante", "ubicacion": "Atmósfera y gas natural"},
+    {"numero": 3, "simbolo": "Li", "nombre": "Litio", "uso": "Baterías y medicina", "ubicacion": "Minerales como espodumena"},
+    # Se pueden agregar más elementos aquí...
+]
 
-        const tabla = document.getElementById("tabla");
-        const info = document.getElementById("info");
+# Configurar la página de Streamlit
+st.set_page_config(page_title="Tabla Periódica Interactiva")
+st.title("Tabla Periódica Interactiva")
 
-        elementos.forEach(el => {
-            let div = document.createElement("div");
-            div.className = "elemento";
-            div.innerHTML = `<strong>${el.simbolo}</strong><br>${el.numero}`;
-            div.onclick = () => {
-                info.style.display = "block";
-                info.innerHTML = `<h2>${el.nombre} (${el.simbolo})</h2><p><strong>Número Atómico:</strong> ${el.numero}</p>
-                                  <p><strong>Ubicación:</strong> ${el.ubicacion}</p>
-                                  <p><strong>Uso:</strong> ${el.uso}</p>`;
-            };
-            tabla.appendChild(div);
-        });
-    </script>
-</body>
-</html>
+# Crear la interfaz para mostrar los elementos
+seleccion = st.selectbox("Selecciona un elemento", [f"{el['nombre']} ({el['simbolo']})" for el in elementos])
+
+# Mostrar información del elemento seleccionado
+for el in elementos:
+    if seleccion == f"{el['nombre']} ({el['simbolo']})":
+        st.subheader(f"{el['nombre']} ({el['simbolo']})")
+        st.write(f"**Número Atómico:** {el['numero']}")
+        st.write(f"**Ubicación:** {el['ubicacion']}")
+        st.write(f"**Uso:** {el['uso']}")
